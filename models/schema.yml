@@ -1,0 +1,36 @@
+#This file is used to test if all models are following the schema
+#It will only test the output of each model, and not the source from which the table/view has been created
+
+version: 2
+
+models:
+  - name: customers
+    columns:
+      - name: ID
+        tests:
+          - unique
+          - not_null
+      - name: number_of_orders
+        tests:
+          - not_null
+
+  - name: staging_customers
+    columns:
+      - name: ID
+        tests:
+          - unique
+          - not_null
+
+  - name: staging_orders
+    columns:
+      - name: USER_ID
+        tests:
+          - not_null
+          - relationships:
+              to: ref('staging_customers')
+              field: ID       
+
+      #- name: status
+      #  tests:
+      #    - accepted_values:
+      #        values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
